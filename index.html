@@ -387,11 +387,13 @@ function visibleRestaurants(){
 const mapEl = $('#map');
 const map = L.map('leaflet', {zoomControl:false}).setView(PORTO_ALEGRE, 13);
 L.control.zoom({position:'bottomright'}).addTo(map);
+// Mapas do OpenStreetMap: gratuitos e sem chave. No modo escuro, as cores são invertidas.
+const OSM_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+document.head.insertAdjacentHTML('beforeend', '<style>.tiles-dark{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(.9)}</style>');
 const tiles = {
-  light: L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {maxZoom:20, subdomains:'abcd',
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'}),
-  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:20, subdomains:'abcd',
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'})
+  light: L.tileLayer(OSM_URL, {maxZoom:19, attribution:OSM_ATTR}),
+  dark: L.tileLayer(OSM_URL, {maxZoom:19, attribution:OSM_ATTR, className:'tiles-dark'})
 };
 const darkMq = window.matchMedia('(prefers-color-scheme: dark)');
 let currentTiles = null;
